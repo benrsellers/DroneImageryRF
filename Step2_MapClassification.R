@@ -1,18 +1,10 @@
 ########################################################################
 
-#Project: Mapping Rangeland Vegetation Attributes to Inform Grazing Management in Moffat County
-#Node: Colorado, Fort Collins
-#Term: Fall 2024
-#Team: Jack Hagenbuch, Mike Russo, Sam Metzger, Ben Sellers 
-#Code Contact: Ben Sellers (benrsellers@gmail.com)
-
-# ----------------------------------------------------------------------
-# Step 3: Drone Ocular Sampling Random Forest Model 
+# Step 2: Random Forest Pixel Classification Model 
 # Ben Sellers
 
-# Drone_OcularSamplingRandomForest.R uses ocular training data polygons of
-# plant functional groups (Grass/forbs, Shrubs, Bareground, and Cheatgrass)
-# and creates a random forest model using pixel values extracted from drone imagery. 
+# This Script uses ocular training data polygons of and creates a random forest 
+# model using pixel values extracted from drone imagery. 
 # The model is then projected across the entire imagery area to classify vegetation.
 # Finally, the model is evaluated using validation data from using a user defined
 # training/test split and error metrics are recorded. This script can be run multiple 
@@ -24,7 +16,6 @@
 #3. Train an RF Model
 #4. Run RF Model on the entire Camblin Ranch drone data stack
 #5. Calculate error metrics from classification maps
-#6. Compare field plot data to classified maps and create linear regressions to assess accuracy
 
 # General scripts steps include:
 # 1. Read in all ocular training data, assign classes to each for classification,
@@ -40,18 +31,16 @@
 
 # 5. Calculate error metrics (overall accuracy and Kappa) using validation data and export a confusion matrix.
 
-# 6. Write all model inputs andmetrics to ModelRuns.csv so to keep track of model runs and performance.
+# 6. Write all model inputs and metrics to ModelRuns.csv so to keep track of model runs and performance.
 
 # INPUTS
-# 1: Path to the folder where shrub training data polygons are stored (shrub_path)
-# 2: Path to the folder where grass/forb training data polygons are stored (grassforb_path)
-# 3: Path to the folder where bare ground training data polygons are stored (bareground_path)
-# 4: Path to the folder where cheatgrass training data polygons are stored (cheatgrass_path)
-# 5: Path to drone_stack raster, created in Drone_RasterStack.R (drone_stack_path)
-# 6: Path to the folder where model outputs are stored - script creates folder if it doesn't already exist (classification_out_path)
-# 7: Random forest parameter mtry - determines how many variables to try at once in creating model (num_mtry) 
-# 8: Random forest parameter trees - determines the number of trees used in creating model (num_trees)
-# 9: Parameter to determine the proportion of training vs test data. EX: 0.8 = 80% training/test split (cal_val_split)
+# 1: Number of classes to use for classification
+# 2: Names of classes used in classification
+# 3: Path to drone_stack raster, created in Drone_RasterStack.R (drone_stack_path)
+# 4: Path to the folder where model outputs are stored - script creates folder if it doesn't already exist (classification_out_path)
+# 5: Random forest parameter mtry - determines how many variables to try at once in creating model (num_mtry) 
+# 6: Random forest parameter trees - determines the number of trees used in creating model (num_trees)
+# 7: Parameter to determine the proportion of training vs test data. EX: 0.8 = 80% training/test split (cal_val_split)
 # OUTPUTS
 # 1. ModelRuns folder containing subfolders for each random forest model
 # 2. ModelRuns.csv containing spreadsheet of each model run's parameters and performance

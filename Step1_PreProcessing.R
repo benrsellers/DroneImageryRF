@@ -1,16 +1,9 @@
 ########################################################################
 
-#Project: Mapping Rangeland Vegetation Attributes to Inform Grazing Management in Moffat County
-#Node: Colorado, Fort Collins
-#Term: Fall 2024
-#Team: Jack Hagenbuch, Mike Russo, Sam Metzger, Ben Sellers 
-#Code Contact: Ben Sellers (benrsellers@gmail.com)
-
-# ----------------------------------------------------------------------
-# Step 2: Drone Raster Calculations and Stacking 
+# Step 2: Raster Calculations and Mosaicing 
 # Ben Sellers
 
-# Drone_RasterStack.R uses RGB and DSM/DTM layers from processed drone imagery 
+# Step 1 uses RGB and DSM/DTM layers from processed drone imagery 
 # to calculate vegetation indices and terrain metrics and creates a composite for 
 # use in supervised classification. 
 
