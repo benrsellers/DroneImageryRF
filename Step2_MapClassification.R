@@ -85,6 +85,7 @@ classification_out_path <- file.path("E:/CoveringGround/repos/PB_data/overview_r
 num_mtry <- 7
 num_trees <- 50
 cal_val_split <- .8
+filter_size <- 11
 ### End Fill in Data ###
 # ----------------------------------------------------------------------
 
@@ -300,7 +301,7 @@ map <- predict(drone_stack, type='response', rf_classifier, filename=output_file
 plot(map)
 
 # Smoothing the result raster with a majority filter
-whitebox::wbt_majority_filter(map, file.path(output_foldername, paste0("Run",folder_count,'_', current_date,"_majorityfilter.tif")), filterx = 11, filtery = 11,
+whitebox::wbt_majority_filter(map, file.path(output_foldername, paste0("Run",folder_count,'_', current_date,"_majorityfilter.tif")), filterx = filter_size, filtery = filter_size,
                               verbose_mode = FALSE)
 
 ############################################################
