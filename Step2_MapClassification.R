@@ -62,6 +62,8 @@
 # install.packages("randomForest")
 # install.packages("caret")
 # install.packages("dplyr")
+# install.packages("whitebox")
+
 
 # Load libraries
 library(terra)
@@ -71,6 +73,7 @@ library(randomForest)
 library(ggplot2)
 library(tidyr)
 library(caret)
+library(whitebox)
 
 # ----------------------------------------------------------------------
 ### Start Fill in Data ###
@@ -295,6 +298,11 @@ output_filename
 # Running RF on the drone stack
 map <- predict(drone_stack, type='response', rf_classifier, filename=output_filename, format="GTiff", overwrite=TRUE)
 plot(map)
+
+# Smoothing the result raster with a majority filter
+whitebox::wbt_majority_filter(map, file.path(output_foldername, paste0("Run",folder_count,'_', current_date,"_majorityfilter.tif")), filterx = 11, filtery = 11,
+                              verbose_mode = FALSE)
+
 ############################################################
 ### Step 5. Accuracy assement using ocular training data ###
 ############################################################
