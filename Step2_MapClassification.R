@@ -74,9 +74,9 @@ library(caret)
 
 # ----------------------------------------------------------------------
 ### Start Fill in Data ###
-class_count = 7 # Number of classes 
-class_names = c("EmergentVeg", "LightBrownVeg", "LightGreenVeg", "Phrag", "Rice", "Shrubs", "Water") #Names of classes
-training_path <- file.path("E:/CoveringGround/repos/PB_data/overview_rgb/shp/PB_training") #Path to training data folder
+class_count = 2 # Number of classes 
+class_names = c("Shrub", "NonShrub") #Names of classes
+training_path <- file.path("E:/CoveringGround/repos/PB_data/overview_rgb/shp/Shrub_test") #Path to training data folder
 drone_stack_path <- file.path("E:/CoveringGround/repos/PB_data/overview_rgb/tif/DroneStack/drone_stack.tif")
 classification_out_path <- file.path("E:/CoveringGround/repos/PB_data/overview_rgb/tif/ModelOutputs")
 num_mtry <- 7
@@ -128,7 +128,6 @@ if (!file.exists(modelruns_path)) {
 }
 
 
-#Test
 # Make new spreadsheet for ModelRuns unless it already exists
 if (!file.exists(modelruns_path)) {
   # Dynamically create column names for each class's pixel count based on class names
@@ -169,23 +168,20 @@ training_paths
 ### Step 1. Merging Training Data Shapefiles ###         
 ################################################
 
+#### debug
 
-# Function for reading in all training polygon shapefiles and joining them into one sf polygon
-read_and_merge_training_polygons <- function(filepaths) {
-  #make an empty sf object to store joined shapefiles
-  shapefiles <- NULL
-  
-  #loop over shapefiles in the list of filepaths you supply
-  for (i in filepaths) {
-    shp = st_read(i)
-    if (is.null(shapefiles)) {
-      shapefiles = shp
-    } else {
-      shapefiles <- rbind(shapefiles, shp)
-    }
-  } 
-  return(shapefiles)
-}
+print(training_paths)  # Debugging step
+
+lapply(training_paths, function(path) {
+  files <- list.files(path, pattern = ".shp$", full.names = TRUE)
+  print(paste("Files in", path, ":", paste(files, collapse = ", ")))
+  files
+})
+sapply(training_paths, dir.exists)
+
+
+####
+
 
 read_and_merge_training_polygons <- function(filepaths, class_id) {
   shapefiles <- do.call(rbind, lapply(filepaths, function(path) {
@@ -294,7 +290,7 @@ varImpPlot(rf_classifier, main = 'Band Importance')
 output_filename <- file.path(output_foldername, paste0("Run",folder_count,'_', current_date, ".tif"))
 output_filename
 
-drone_stack[is.na(drone_stack)] <- 0
+#drone_stack[is.na(drone_stack)] <- 0
 
 # Running RF on the drone stack
 map <- predict(drone_stack, type='response', rf_classifier, filename=output_filename, format="GTiff", overwrite=TRUE)
